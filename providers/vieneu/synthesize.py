@@ -87,8 +87,8 @@ def synthesize(text: str, **options) -> tuple:
     # output and fewer EOS-skip runaways ("duration anomaly" retries upstream).
     audio = tts.infer(
         text,
-        temperature=options.get("temperature", 0.3),
-        top_k=options.get("top_k", 10),
+        temperature=options.get("temperature", 0.7),
+        top_k=options.get("top_k", 40),
         **voice_kwargs,
     )
 
