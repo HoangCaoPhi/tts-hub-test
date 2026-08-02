@@ -1,0 +1,29 @@
+[project]
+name = "my-tts-hub"
+version = "0.1.0"
+description = "Multi-provider TTS service (Pocket TTS, VieNeu)"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "python-multipart",
+    "soundfile",
+    "numpy",
+    "torch",
+    "torchcodec",
+    "pocket-tts",
+    "vieneu",
+    "llama-cpp-python>=0.3.16",
+    "pyloudnorm>=0.2.0",
+    "neucodec>=0.0.6",
+    "spaces"
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "httpx",
+]
+
+[tool.uv]
+override-dependencies = ["librosa>=0.10", "numba>=0.60"]

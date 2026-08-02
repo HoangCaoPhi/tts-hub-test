@@ -1,0 +1,244 @@
+{
+  "Alex": {
+    "edge": {
+      "language": "en",
+      "options": {
+        "preset": "en-US-AndrewNeural"
+      }
+    },
+    "pocket": {
+      "language": "en",
+      "options": {
+        "preset": "alba"
+      }
+    }
+  },
+  "Roger": {
+    "omnivoice": {
+      "language": "en",
+      "options": {
+        "ref_text": "The quick brown fox jumps over the lazy dog while the sun slowly sets behind the distant mountains.",
+        "ref_audio": "voices/en/Roger-omnivoice.wav"
+      }
+    },
+    "edge": {
+      "language": "en",
+      "options": {
+        "preset": "en-US-RogerNeural"
+      }
+    },
+    "pocket": {
+      "language": "en",
+      "options": {
+        "preset": "bill_boerst"
+      }
+    }
+  },
+  "Guy": {
+    "omnivoice": {
+      "language": "en",
+      "options": {
+        "ref_text": "The quick brown fox jumps over the lazy dog while the sun slowly sets behind the distant mountains.",
+        "ref_audio": "voices/en/Guy-omnivoice.wav"
+      }
+    },
+    "edge": {
+      "language": "en",
+      "options": {
+        "preset": "en-US-GuyNeural"
+      }
+    },
+    "pocket": {
+      "language": "en",
+      "options": {
+        "preset": "bill_boerst"
+      }
+    }
+  },
+  "Jenny": {
+    "omnivoice": {
+      "language": "en",
+      "options": {
+        "ref_text": "The quick brown fox jumps over the lazy dog while the sun slowly sets behind the distant mountains.",
+        "ref_audio": "voices/en/Jenny-omnivoice.wav"
+      }
+    },
+    "edge": {
+      "language": "en",
+      "options": {
+        "preset": "en-US-JennyNeural"
+      }
+    },
+    "pocket": {
+      "language": "en",
+      "options": {
+        "preset": "caro_davy"
+      }
+    }
+  },
+  "Aria": {
+    "omnivoice": {
+      "language": "en",
+      "options": {
+        "ref_text": "The quick brown fox jumps over the lazy dog while the sun slowly sets behind the distant mountains.",
+        "ref_audio": "voices/en/Aria-omnivoice.wav"
+      }
+    },
+    "edge": {
+      "language": "en",
+      "options": {
+        "preset": "en-US-AriaNeural"
+      }
+    },
+    "pocket": {
+      "language": "en",
+      "options": {
+        "preset": "caro_davy"
+      }
+    }
+  },
+  "Steffan": {
+    "omnivoice": {
+      "language": "en",
+      "options": {
+        "ref_text": "The quick brown fox jumps over the lazy dog while the sun slowly sets behind the distant mountains.",
+        "ref_audio": "voices/en/Steffan-omnivoice.wav"
+      }
+    },
+    "edge": {
+      "language": "en",
+      "options": {
+        "preset": "en-US-SteffanNeural"
+      }
+    },
+    "pocket": {
+      "language": "en",
+      "options": {
+        "preset": "eponine"
+      }
+    }
+  },
+  "Ava": {
+    "omnivoice": {
+      "language": "en",
+      "options": {
+        "ref_text": "The quick brown fox jumps over the lazy dog while the sun slowly sets behind the distant mountains.",
+        "ref_audio": "voices/en/Ava-omnivoice.wav"
+      }
+    },
+    "edge": {
+      "language": "en",
+      "options": {
+        "preset": "en-US-AvaNeural"
+      }
+    },
+    "pocket": {
+      "language": "en",
+      "options": {
+        "preset": "caro_davy"
+      }
+    }
+  },
+  "Eric": {
+    "omnivoice": {
+      "language": "en",
+      "options": {
+        "ref_text": "The quick brown fox jumps over the lazy dog while the sun slowly sets behind the distant mountains.",
+        "ref_audio": "voices/en/Eric-omnivoice.wav"
+      }
+    },
+    "edge": {
+      "language": "en",
+      "options": {
+        "preset": "en-US-EricNeural"
+      }
+    },
+    "pocket": {
+      "language": "en",
+      "options": {
+        "preset": "alba"
+      }
+    }
+  },
+  "Michelle": {
+    "omnivoice": {
+      "language": "en",
+      "options": {
+        "ref_text": "The quick brown fox jumps over the lazy dog while the sun slowly sets behind the distant mountains.",
+        "ref_audio": "voices/en/Michelle-omnivoice.wav"
+      }
+    },
+    "edge": {
+      "language": "en",
+      "options": {
+        "preset": "en-US-MichelleNeural"
+      }
+    },
+    "pocket": {
+      "language": "en",
+      "options": {
+        "preset": "caro_davy"
+      }
+    }
+  },
+  "Ana": {
+    "omnivoice": {
+      "language": "en",
+      "options": {
+        "ref_text": "The quick brown fox jumps over the lazy dog while the sun slowly sets behind the distant mountains.",
+        "ref_audio": "voices/en/Ana-omnivoice.wav"
+      }
+    },
+    "edge": {
+      "language": "en",
+      "options": {
+        "preset": "en-US-AnaNeural"
+      }
+    },
+    "pocket": {
+      "language": "en",
+      "options": {
+        "preset": "caro_davy"
+      }
+    }
+  },
+  "Christopher": {
+    "omnivoice": {
+      "language": "en",
+      "options": {
+        "ref_text": "The quick brown fox jumps over the lazy dog while the sun slowly sets behind the distant mountains.",
+        "ref_audio": "voices/en/Christopher-omnivoice.wav"
+      }
+    },
+    "edge": {
+      "language": "en",
+      "options": {
+        "preset": "en-US-ChristopherNeural"
+      }
+    },
+    "pocket": {
+      "language": "en",
+      "options": {
+        "preset": "bill_boerst"
+      }
+    }
+  },
+  "HyHy": {
+    "vieneu": {
+      "language": "vi",
+      "options": {
+        "ref_audio": "voices/vi/HyHy-vieneu.wav",
+        "ref_text": "Hôm nay trời nắng đẹp, gió nhẹ thổi qua những hàng cây xanh mát bên đường."
+      }
+    }
+  },
+  "Phi": {
+    "vieneu": {
+      "language": "vi",
+      "options": {
+        "ref_text": "Xin chào, hôm nay trời khá là đẹp và tôi đang thử tạo một bản ghi giọng nói mẫu.",
+        "ref_audio": "voices/vi/Phi-vieneu.wav"
+      }
+    }
+  }
+}
