@@ -51,7 +51,7 @@ _MAX_CONTEXT = 1024
 def _get_tts():
     global _tts
     if _tts is None:
-        _tts = Vieneu(mode="standard")
+        _tts = Vieneu(mode="standard", backbone_device="cuda", codec_device="cuda")
         _tts.max_context = _MAX_CONTEXT
     return _tts
 
@@ -67,7 +67,7 @@ def _get_tts_clone():
     # generation runs away into incoherent noise instead of stopping at EOS.
     global _tts_clone
     if _tts_clone is None:
-        _tts_clone = Vieneu(mode="standard", codec_repo="neuphonic/distill-neucodec")
+        _tts_clone = Vieneu(mode="standard", codec_repo="neuphonic/distill-neucodec", backbone_device="cuda", codec_device="cuda")
         _tts_clone.max_context = _MAX_CONTEXT
     return _tts_clone
 
