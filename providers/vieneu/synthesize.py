@@ -40,11 +40,11 @@ def synthesize(text: str, **options) -> tuple:
     else:
         voice_kwargs = {"voice_name": options.get("voice_id")}
 
-    # Default parameters for naturalness
+    # Lower temperature/top_k ensures stable, consistent prosody at the cost of some expressiveness
     audio = tts.infer(
         text,
-        temperature=options.get("temperature", 0.7),
-        top_k=options.get("top_k", 40),
+        temperature=options.get("temperature", 0.3),
+        top_k=options.get("top_k", 20),
         **voice_kwargs,
     )
 
