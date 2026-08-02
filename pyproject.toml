@@ -12,7 +12,6 @@ dependencies = [
     "torch",
     "torchcodec",
     "vieneu",
-    "llama-cpp-python>=0.3.16",
     "pyloudnorm>=0.2.0",
     "neucodec>=0.0.6",
     "spaces"
