@@ -1,11 +1,9 @@
-from . import pocket, vieneu
+from . import vieneu
 
 PROVIDERS = {
-    "pocket": pocket.synthesize,
     "vieneu": vieneu.synthesize,
 }
 
 PROVIDER_INFO = {
-    "pocket": pocket.info,
     "vieneu": vieneu.info,
 }
