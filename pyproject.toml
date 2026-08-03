@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "my-tts-hub"
 version = "0.1.0"
@@ -16,6 +20,10 @@ dependencies = [
     "neucodec>=0.0.6",
     "spaces"
 ]
+
+[tool.setuptools]
+packages = ["api", "providers"]
+py-modules = ["main", "registry"]
 
 [dependency-groups]
 dev = [
