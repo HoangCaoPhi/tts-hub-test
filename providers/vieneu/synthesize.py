@@ -41,7 +41,10 @@ def _get_tts():
 
 
 def synthesize(text: str, **options) -> tuple[np.ndarray, int]:
-    text = _SEPARATOR_SLASH.sub(" hoặc ", text)
+    text = _SEPARATOR_SLASH.sub(" hoặc ", text).strip()
+    if text and not text.endswith((".", "!", "?", ";", ":")):
+        text += "."
+
     tts = _get_tts()
 
     voice_kwargs = {}
@@ -56,15 +59,20 @@ def synthesize(text: str, **options) -> tuple[np.ndarray, int]:
         if preset_voice:
             voice_kwargs = {"voice": preset_voice}
 
+    # Dynamic temperature based on length: <= 4 words gets 0.5 for better natural prosody, longer gets 0.35
+    num_words = len(text.split())
+    default_temp = 0.5 if num_words <= 4 else 0.35
+    temperature = float(options.get("temperature", default_temp))
+
     # Optimal hyperparameter defaults for high voice stability & prosody on GPU
     audio = tts.infer(
         text,
-        style=options.get("style", "tin_tuc"),
-        temperature=options.get("temperature", 0.35),
-        top_k=options.get("top_k", 20),
-        top_p=options.get("top_p", 0.85),
-        repetition_penalty=options.get("repetition_penalty", 1.2),
-        max_chars=options.get("max_chars", 180),
+        style=options.get("style", "tu_nhien"),
+        temperature=temperature,
+        top_k=int(options.get("top_k", 20)),
+        top_p=float(options.get("top_p", 0.85)),
+        repetition_penalty=float(options.get("repetition_penalty", 1.2)),
+        max_chars=int(options.get("max_chars", 180)),
         **voice_kwargs,
     )
 
