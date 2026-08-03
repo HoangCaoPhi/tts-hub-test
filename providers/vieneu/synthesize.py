@@ -65,6 +65,9 @@ def synthesize(text: str, **options) -> tuple[np.ndarray, int]:
         }
     else:
         preset_voice = options.get("voice_id") or options.get("voice") or options.get("preset") or "Tuyen"
+        if preset_voice and hasattr(tts, "_preset_voices") and tts._preset_voices:
+            if preset_voice not in tts._preset_voices:
+                preset_voice = getattr(tts, "_default_voice", None) or next(iter(tts._preset_voices.keys()))
         if preset_voice:
             voice_kwargs = {"voice": preset_voice}
 
