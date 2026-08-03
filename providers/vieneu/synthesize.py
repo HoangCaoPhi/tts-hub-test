@@ -81,6 +81,9 @@ def synthesize(text: str, **options) -> tuple[np.ndarray, int]:
             voice_kwargs = {"voice": preset_voice}
 
     # Fluent parameters for VieNeu v3Turbo
+    # use_ref_codes=False: rely on speaker embedding only (consistency mode).
+    # The default True uses in-context reference audio frames (fidelity), which
+    # can hurt prosody on short text — False gives more stable output across all lengths.
     audio = tts.infer(
         text,
         style=options.get("style", "tu_nhien"),
@@ -89,6 +92,7 @@ def synthesize(text: str, **options) -> tuple[np.ndarray, int]:
         top_p=float(options.get("top_p", 0.90)),
         repetition_penalty=float(options.get("repetition_penalty", 1.15)),
         max_chars=int(options.get("max_chars", 180)),
+        use_ref_codes=bool(options.get("use_ref_codes", False)),
         **voice_kwargs,
     )
 
