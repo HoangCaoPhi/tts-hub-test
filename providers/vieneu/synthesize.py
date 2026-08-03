@@ -30,17 +30,12 @@ _SEPARATOR_SLASH = re.compile(r"(?<!\d)/(?!\d)")
 def _get_tts():
     global _tts
     if _tts is None:
-        device = "cuda" if torch.cuda.is_available() else "cpu"
-        _tts = Vieneu(
-            mode="standard",
-            backbone_repo="pnnbao-ump/VieNeu-TTS-v2",
-            gguf_filename=None,
-            backbone_device=device,
-            codec_device=device,
-        )
+        device = "cuda" if torch.cuda.is_available() else "auto"
+        dtype = "float16" if torch.cuda.is_available() else "auto"
+        _tts = Vieneu(mode="v3turbo", device=device, dtype=dtype)
         # Warmup GPU
         try:
-            _tts.infer("Xin chào", temperature=0.35, top_k=20, max_chars=180)
+            _tts.infer("Xin chào", temperature=0.50, top_k=40, max_chars=180)
         except Exception:
             pass
     return _tts
@@ -59,20 +54,18 @@ def synthesize(text: str, **options) -> tuple[np.ndarray, int]:
         }
     else:
         preset_voice = options.get("voice_id") or options.get("voice") or options.get("preset") or "Tuyen"
-        if preset_voice in ("Phạm Tuyên", "Tuyen"):
-            preset_voice = "Tuyen"
         if preset_voice:
             voice_kwargs = {"voice": preset_voice}
 
-    # Keep original hyperparameter defaults with mode="standard"
+    # Fluent parameters for VieNeu v3Turbo
     audio = tts.infer(
         text,
         style=options.get("style", "tu_nhien"),
-        temperature=options.get("temperature", 0.35),
-        top_k=options.get("top_k", 20),
-        top_p=options.get("top_p", 0.85),
-        repetition_penalty=options.get("repetition_penalty", 1.2),
-        max_chars=options.get("max_chars", 180),
+        temperature=float(options.get("temperature", 0.50)),
+        top_k=int(options.get("top_k", 40)),
+        top_p=float(options.get("top_p", 0.90)),
+        repetition_penalty=float(options.get("repetition_penalty", 1.15)),
+        max_chars=int(options.get("max_chars", 180)),
         **voice_kwargs,
     )
 
