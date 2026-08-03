@@ -27,6 +27,26 @@ _tts = None
 _SEPARATOR_SLASH = re.compile(r"(?<!\d)/(?!\d)")
 
 
+# Map friendly IDs and full Vietnamese names to exact v3turbo preset keys
+VOICE_MAPPING = {
+    "Tuyen": "Phạm Tuyên",
+    "Phạm Tuyên": "Phạm Tuyên",
+    "Vinh": "Xuân Vĩnh",
+    "Xuân Vĩnh": "Xuân Vĩnh",
+    "Binh": "Thanh Bình",
+    "Thanh Bình": "Thanh Bình",
+    "Son": "Thái Sơn",
+    "Sơn": "Thái Sơn",
+    "Thái Sơn": "Thái Sơn",
+    "Doan": "Quốc Đoàn",
+    "Quốc Đoàn": "Quốc Đoàn",
+    "Ly": "Trúc Ly",
+    "Trúc Ly": "Trúc Ly",
+    "Ngoc": "Bích Ngọc",
+    "Bích Ngọc": "Bích Ngọc",
+}
+
+
 def _get_tts():
     global _tts
     if _tts is None:
@@ -53,7 +73,8 @@ def synthesize(text: str, **options) -> tuple[np.ndarray, int]:
             "denoise": options.get("denoise", True),
         }
     else:
-        preset_voice = options.get("voice_id") or options.get("voice") or options.get("preset") or "Tuyen"
+        raw_voice = options.get("voice_id") or options.get("voice") or options.get("preset") or "Phạm Tuyên"
+        preset_voice = VOICE_MAPPING.get(raw_voice, raw_voice)
         if preset_voice:
             voice_kwargs = {"voice": preset_voice}
 
