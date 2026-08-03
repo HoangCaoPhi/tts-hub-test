@@ -240,5 +240,29 @@
         "ref_audio": "voices/vi/Phi-vieneu.wav"
       }
     }
+  },
+  "Tuyen": {
+    "vieneu": {
+      "language": "vi",
+      "options": {
+        "voice": "Phạm Tuyên"
+      }
+    }
+  },
+  "Vinh": {
+    "vieneu": {
+      "language": "vi",
+      "options": {
+        "voice": "Xuân Vĩnh"
+      }
+    }
+  },
+  "Doan": {
+    "vieneu": {
+      "language": "vi",
+      "options": {
+        "voice": "Quốc Đoàn"
+      }
+    }
   }
 }
