@@ -52,14 +52,14 @@ def synthesize(text: str, **options) -> tuple[np.ndarray, int]:
             "denoise": options.get("denoise", True),
         }
     else:
-        preset_voice = options.get("voice_id") or options.get("voice")
+        preset_voice = options.get("voice_id") or options.get("voice") or options.get("preset") or "Tuyen"
         if preset_voice:
             voice_kwargs = {"voice": preset_voice}
 
     # Optimal hyperparameter defaults for high voice stability & prosody on GPU
     audio = tts.infer(
         text,
-        style=options.get("style", "tu_nhien"),
+        style=options.get("style", "tin_tuc"),
         temperature=options.get("temperature", 0.35),
         top_k=options.get("top_k", 20),
         top_p=options.get("top_p", 0.85),
