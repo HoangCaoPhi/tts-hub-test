@@ -30,9 +30,14 @@ _SEPARATOR_SLASH = re.compile(r"(?<!\d)/(?!\d)")
 def _get_tts():
     global _tts
     if _tts is None:
-        device = "cuda" if torch.cuda.is_available() else "auto"
-        dtype = "float16" if torch.cuda.is_available() else "auto"
-        _tts = Vieneu(mode="v3turbo", device=device, dtype=dtype)
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        _tts = Vieneu(
+            mode="standard",
+            backbone_repo="pnnbao-ump/VieNeu-TTS-v2",
+            gguf_filename=None,
+            backbone_device=device,
+            codec_device=device,
+        )
         # Warmup GPU
         try:
             _tts.infer("Xin chào", temperature=0.35, top_k=20, max_chars=180)
@@ -54,10 +59,12 @@ def synthesize(text: str, **options) -> tuple[np.ndarray, int]:
         }
     else:
         preset_voice = options.get("voice_id") or options.get("voice") or options.get("preset") or "Tuyen"
+        if preset_voice in ("Phạm Tuyên", "Tuyen"):
+            preset_voice = "Tuyen"
         if preset_voice:
             voice_kwargs = {"voice": preset_voice}
 
-    # Optimal hyperparameter defaults for high voice stability & prosody on GPU
+    # Keep original hyperparameter defaults with mode="standard"
     audio = tts.infer(
         text,
         style=options.get("style", "tu_nhien"),
