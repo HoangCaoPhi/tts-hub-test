@@ -30,15 +30,16 @@ def _get_tts():
     if _tts is None:
         device = "cuda" if torch.cuda.is_available() else "cpu"
         try:
-            # Load Standard Mode (VieNeu-TTS-v2 trained on 10,000+ hours of data)
+            # Load Standard Mode PyTorch GPU (VieNeu-TTS-v2 10,000h model, bypasses GGUF/llama-cpp)
             _tts = Vieneu(
                 mode="standard",
                 backbone_repo="pnnbao-ump/VieNeu-TTS-v2",
+                gguf_filename=None,
                 backbone_device=device,
                 codec_device=device,
             )
         except Exception:
-            # Fallback to v3turbo if standard dependencies are not installed
+            # Fallback to v3turbo if standard PyTorch backend fails
             dtype = "float16" if torch.cuda.is_available() else "auto"
             _tts = Vieneu(mode="v3turbo", device=device, dtype=dtype)
         # Warmup GPU
