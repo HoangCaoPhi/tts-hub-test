@@ -38,12 +38,14 @@ VOICE_MAPPING = {
     "Son": "Thái Sơn",
     "Sơn": "Thái Sơn",
     "Thái Sơn": "Thái Sơn",
-    "Doan": "Quốc Đoàn",
-    "Quốc Đoàn": "Quốc Đoàn",
+    "Doan": "Thục Đoan",
+    "Thục Đoan": "Thục Đoan",
+    "Quốc Đoàn": "Thục Đoan",
     "Ly": "Trúc Ly",
     "Trúc Ly": "Trúc Ly",
-    "Ngoc": "Bích Ngọc",
-    "Bích Ngọc": "Bích Ngọc",
+    "Ngoc": "Ngọc Linh",
+    "Ngọc Linh": "Ngọc Linh",
+    "Bích Ngọc": "Ngọc Linh",
 }
 
 
