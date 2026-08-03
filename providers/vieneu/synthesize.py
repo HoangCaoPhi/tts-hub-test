@@ -25,6 +25,18 @@ _tts = None
 # Only replace when neither side is a digit, so real fractions still read correctly.
 _SEPARATOR_SLASH = re.compile(r"(?<!\d)/(?!\d)")
 
+# Common Vietnamese G2P mispronunciation fixes
+_WORD_CORRECTIONS = [
+    (re.compile(r"\bVào\b"), "vào"),
+    (re.compile(r"\bVÀO\b"), "vào"),
+]
+
+
+def _fix_word_pronunciations(text: str) -> str:
+    for pattern, replacement in _WORD_CORRECTIONS:
+        text = pattern.sub(replacement, text)
+    return text
+
 
 def _get_tts():
     global _tts
@@ -41,6 +53,7 @@ def _get_tts():
 
 
 def synthesize(text: str, **options) -> tuple[np.ndarray, int]:
+    text = _fix_word_pronunciations(text)
     text = _SEPARATOR_SLASH.sub(" hoặc ", text).strip()
     if text and not text.endswith((".", "!", "?", ";", ":")):
         text += "."
