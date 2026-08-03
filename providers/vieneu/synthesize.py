@@ -25,6 +25,30 @@ _tts = None
 # Only replace when neither side is a digit, so real fractions still read correctly.
 _SEPARATOR_SLASH = re.compile(r"(?<!\d)/(?!\d)")
 
+def _get_tts():
+    global _tts
+    if _tts is None:
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        try:
+            # Load Standard Mode (VieNeu-TTS-v2 trained on 10,000+ hours of data)
+            _tts = Vieneu(
+                mode="standard",
+                backbone_repo="pnnbao-ump/VieNeu-TTS-v2",
+                backbone_device=device,
+                codec_device=device,
+            )
+        except Exception:
+            # Fallback to v3turbo if standard dependencies are not installed
+            dtype = "float16" if torch.cuda.is_available() else "auto"
+            _tts = Vieneu(mode="v3turbo", device=device, dtype=dtype)
+        # Warmup GPU
+        try:
+            _tts.infer("Xin chào", temperature=0.3)
+        except Exception:
+            pass
+    return _tts
+
+
 def synthesize(text: str, **options) -> tuple[np.ndarray, int]:
     text = _SEPARATOR_SLASH.sub(" hoặc ", text).strip()
     if text and not text.endswith((".", "!", "?", ";", ":")):
@@ -37,28 +61,27 @@ def synthesize(text: str, **options) -> tuple[np.ndarray, int]:
         voice_kwargs = {
             "ref_audio": options["ref_audio"],
             "ref_text": options.get("ref_text"),
-            "denoise": options.get("denoise", True),
         }
     else:
         preset_voice = options.get("voice_id") or options.get("voice") or options.get("preset") or "Tuyen"
         if preset_voice:
             voice_kwargs = {"voice": preset_voice}
 
-    # Option A defaults: Ultra-stable academic settings for maximum voice precision & stability
-    temperature = float(options.get("temperature", 0.20))
-    top_k = int(options.get("top_k", 15))
-    top_p = float(options.get("top_p", 0.85))
+    # Ultra-stable settings for VieNeu v2 Standard
+    temperature = float(options.get("temperature", 0.30))
+    top_k = int(options.get("top_k", 20))
 
-    audio = tts.infer(
-        text,
-        style=options.get("style", "tu_nhien"),
-        temperature=temperature,
-        top_k=top_k,
-        top_p=top_p,
-        repetition_penalty=float(options.get("repetition_penalty", 1.2)),
-        max_chars=int(options.get("max_chars", 180)),
-        **voice_kwargs,
-    )
+    # Standard engine supports inference kwargs
+    try:
+        audio = tts.infer(
+            text,
+            temperature=temperature,
+            top_k=top_k,
+            max_chars=int(options.get("max_chars", 200)),
+            **voice_kwargs,
+        )
+    except TypeError:
+        audio = tts.infer(text, **voice_kwargs)
 
     return audio, tts.sample_rate
 
