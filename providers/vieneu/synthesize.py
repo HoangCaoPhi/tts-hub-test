@@ -1,11 +1,17 @@
 import os
 import re
-import tempfile
 
-import soundfile as sf
+import numpy as np
+import torch
 from vieneu import Vieneu
 
 from ..base import ProviderInfo
+
+# Enable CUDA optimizations if available
+if torch.cuda.is_available():
+    torch.backends.cuda.matmul.allow_tf32 = True
+    torch.backends.cudnn.allow_tf32 = True
+    torch.backends.cudnn.benchmark = True
 
 info = ProviderInfo(
     cloning=True,
@@ -15,48 +21,52 @@ info = ProviderInfo(
 
 _tts = None
 
-# ponytail: vieneu reads "/" as "trên" (fraction reading, e.g. "1/2" -> "một
-# trên hai"). Correct for actual fractions/dates but wrong when "/" is just a
-# separator between words (e.g. "A/B"). Only replace when neither side is a
-# digit, so real fractions still read correctly.
+# vieneu reads "/" as "trên" (fraction reading, e.g. "1/2" -> "một trên hai").
+# Only replace when neither side is a digit, so real fractions still read correctly.
 _SEPARATOR_SLASH = re.compile(r"(?<!\d)/(?!\d)")
 
 
 def _get_tts():
     global _tts
     if _tts is None:
-        # Use v3turbo which defaults to PyTorch on GPU automatically
-        _tts = Vieneu(mode="v3turbo")
+        device = "cuda" if torch.cuda.is_available() else "auto"
+        dtype = "float16" if torch.cuda.is_available() else "auto"
+        _tts = Vieneu(mode="v3turbo", device=device, dtype=dtype)
+        # Warmup GPU
+        try:
+            _tts.infer("Xin chào", temperature=0.35, top_k=20, max_chars=180)
+        except Exception:
+            pass
     return _tts
 
 
-def synthesize(text: str, **options) -> tuple:
+def synthesize(text: str, **options) -> tuple[np.ndarray, int]:
     text = _SEPARATOR_SLASH.sub(" hoặc ", text)
     tts = _get_tts()
+
     voice_kwargs = {}
-
     if "ref_audio" in options:
-        voice_kwargs = {"ref_audio": options["ref_audio"], "ref_text": options["ref_text"]}
+        voice_kwargs = {
+            "ref_audio": options["ref_audio"],
+            "ref_text": options.get("ref_text"),
+            "denoise": options.get("denoise", True),
+        }
     else:
-        voice_kwargs = {"voice_name": options.get("voice_id")}
+        preset_voice = options.get("voice_id") or options.get("voice")
+        if preset_voice:
+            voice_kwargs = {"voice": preset_voice}
 
-    # Lower temperature/top_k ensures stable, consistent prosody at the cost of some expressiveness
+    # Optimal hyperparameter defaults for high voice stability & prosody on GPU
     audio = tts.infer(
         text,
-        temperature=options.get("temperature", 0.3),
+        style=options.get("style", "tu_nhien"),
+        temperature=options.get("temperature", 0.35),
         top_k=options.get("top_k", 20),
+        top_p=options.get("top_p", 0.85),
+        repetition_penalty=options.get("repetition_penalty", 1.2),
+        max_chars=options.get("max_chars", 180),
         **voice_kwargs,
     )
 
-    _, tmp_path = tempfile.mkstemp(suffix=".wav")
-    try:
-        sf.write(tmp_path, audio, tts.sample_rate)
-        with open(tmp_path, "rb") as f:
-            audio_bytes = f.read()
-    finally:
-        try:
-            os.remove(tmp_path)
-        except OSError:
-            pass
+    return audio, tts.sample_rate
 
-    return audio_bytes, "audio/wav"
