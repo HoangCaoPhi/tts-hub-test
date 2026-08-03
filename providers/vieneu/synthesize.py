@@ -75,7 +75,7 @@ def synthesize(text: str, **options) -> tuple[np.ndarray, int]:
             "denoise": options.get("denoise", True),
         }
     else:
-        raw_voice = options.get("voice_id") or options.get("voice") or options.get("preset") or "Phạm Tuyên"
+        raw_voice = options.get("voice_id") or options.get("voice") or options.get("preset") or "Thái Sơn"
         preset_voice = VOICE_MAPPING.get(raw_voice, raw_voice)
         if preset_voice:
             voice_kwargs = {"voice": preset_voice}
